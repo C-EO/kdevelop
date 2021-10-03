@@ -21,6 +21,7 @@
 #define KDEVPLATFORM_ARCHIVETEMPLATELOADER_H
 
 #include <grantlee/templateloader.h>
+#include <language-features.h>
 
 class KArchiveDirectory;
 namespace KDevelop {
@@ -36,7 +37,11 @@ public:
     bool canLoadTemplate(const QString& name) const override;
     Grantlee::Template loadByName(const QString& name, const Grantlee::Engine* engine) const override;
 
+#if USE_KFGRANTLEE
+    Grantlee::MediaUri getMediaUri(const QString &fileName) const override;
+#else
     QPair<QString, QString> getMediaUri(const QString& fileName) const override;
+#endif
 
 protected:
     friend class ArchiveTemplateLocation;

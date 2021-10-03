@@ -80,10 +80,14 @@ Grantlee::Template ArchiveTemplateLoader::loadByName(const QString& name, const 
     return Grantlee::Template();
 }
 
+#if USE_KFGRANTLEE
+Grantlee::MediaUri ArchiveTemplateLoader::getMediaUri(const QString &fileName) const
+#else
 QPair<QString, QString> ArchiveTemplateLoader::getMediaUri(const QString& fileName) const
+#endif
 {
     Q_UNUSED(fileName);
-    return QPair<QString, QString>();
+    return {};
 }
 
 ArchiveTemplateLocation::ArchiveTemplateLocation(const KArchiveDirectory* directory)

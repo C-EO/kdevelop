@@ -195,8 +195,18 @@ PRIVATE
     KF5::TextEditor
     KF5::Parts
     KF5::Archive
-    Grantlee5::Templates
 )
+if(USE_KFGRANTLEE)
+    target_link_libraries(KDevPlatformLanguage
+        PRIVATE
+            KF5::Grantlee
+    )
+else()
+    target_link_libraries(KDevPlatformLanguage
+        PRIVATE
+            Grantlee5::Templates
+    )
+endif()
 
 install(FILES
     assistant/renameaction.h

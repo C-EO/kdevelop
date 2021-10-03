@@ -47,7 +47,11 @@ public:
     explicit NoEscapeStream (QTextStream* stream);
 
     QString escape (const QString& input) const override;
+#if USE_KFGRANTLEE
+    std::shared_ptr<OutputStream> clone(QTextStream *stream) const override;
+#else
     QSharedPointer<OutputStream> clone (QTextStream* stream) const override;
+#endif
 };
 
 NoEscapeStream::NoEscapeStream() : OutputStream()
@@ -63,11 +67,18 @@ QString NoEscapeStream::escape(const QString& input) const
     return input;
 }
 
+#if USE_KFGRANTLEE
+std::shared_ptr<OutputStream> NoEscapeStream::clone(QTextStream *stream) const
+{
+    return std::shared_ptr<OutputStream>(new NoEscapeStream(stream));
+}
+#else
 QSharedPointer<OutputStream> NoEscapeStream::clone(QTextStream* stream) const
 {
     QSharedPointer<OutputStream> clonedStream = QSharedPointer<OutputStream>(new NoEscapeStream(stream));
     return clonedStream;
 }
+#endif
 
 using namespace KDevelop;
 

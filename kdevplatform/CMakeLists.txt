@@ -17,11 +17,21 @@ include(KDevPlatformMacrosInternal)
 
 # have to set required in find_package call already
 # as macros & imported targets are used later, so would fail over that before doing summary log
-find_package(Grantlee5 CONFIG REQUIRED)
-set_package_properties(Grantlee5 PROPERTIES
-    PURPOSE "Grantlee templating library, needed for file templates"
-    URL "http://www.grantlee.org/"
-    TYPE REQUIRED)
+set(USE_KFGRANTLEE FALSE)
+find_package(KF5Grantlee "5.87.0" CONFIG QUIET)
+if(KF5Grantlee_FOUND)
+    set_package_properties(KF5Grantlee PROPERTIES
+        TYPE REQUIRED
+    )
+    set(USE_KFGRANTLEE TRUE)
+else()
+    # try old non-KFied Grantlee
+    find_package(Grantlee5 CONFIG REQUIRED)
+    set_package_properties(Grantlee5 PROPERTIES
+        PURPOSE "Grantlee templating library, needed for file templates"
+        URL "http://www.grantlee.org/"
+        TYPE REQUIRED)
+endif()
 
 set(Boost_ADDITIONAL_VERSIONS 1.39.0 1.39)
 find_package(Boost 1.35.0)
